@@ -21,7 +21,7 @@ RUN apt-get update && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     composer --version
 
-# Copy project files to the container
+# Copy project files to the containers
 COPY . .
 
 # Install project dependencies

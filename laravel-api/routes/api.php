@@ -1,5 +1,6 @@
 <?php
 
+use App\Containers\Controllers\ContainerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('containers',ContainerController::class);
+
+Route::get('/containers/{id}/allowedActions', [ContainerController::class, 'allowedActions'])->name('container.allowedActions');
+Route::put('/containers/{containerId}/changeState/{statusId}', [ContainerController::class, 'changeState'])->name('container.changeState');
