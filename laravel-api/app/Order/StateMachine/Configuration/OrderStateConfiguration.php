@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Containers\StateMachine\Configuration;
+namespace App\Order\StateMachine\Configuration;
 
-use App\Containers\StateMachine\Enums\OrderStatus;
-use App\Containers\StateMachine\States\ApprovedState;
-use App\Containers\StateMachine\States\CanceledState;
-use App\Containers\StateMachine\States\DraftState;
-use App\Containers\StateMachine\States\ProcessingState;
-use App\Containers\StateMachine\States\RejectedState;
+use App\Order\StateMachine\States\ApprovedState;
+use App\Order\StateMachine\States\CanceledState;
+use App\Order\StateMachine\States\DraftState;
+use App\Order\StateMachine\States\ProcessingState;
+use App\Order\StateMachine\States\RejectedState;
+use App\Order\StateMachine\Enums\OrderStatus;
 
-class StateConfiguration
+class OrderStateConfiguration
 {
     private $approvedState;
     private $canceledState;
@@ -18,12 +18,13 @@ class StateConfiguration
     private $rejectedState;
 
     public function __construct(
-        ApprovedState $approvedState,
-        CanceledState $canceledState,
-        DraftState $draftState,
+        ApprovedState   $approvedState,
+        CanceledState   $canceledState,
+        DraftState      $draftState,
         ProcessingState $processingState,
-        RejectedState $rejectedState
-    ) {
+        RejectedState   $rejectedState
+    )
+    {
         $this->approvedState = $approvedState;
         $this->canceledState = $canceledState;
         $this->draftState = $draftState;

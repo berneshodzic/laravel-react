@@ -4,7 +4,7 @@ namespace App\Containers\StateMachine;
 
 use App\Containers\Models\Container;
 use App\Containers\StateMachine\Configuration\StateConfiguration;
-use App\Containers\StateMachine\Enums\ContainerStatus;
+use App\Containers\StateMachine\Enums\OrderStatus;
 
 class ContainerStateMachineService
 {
@@ -14,6 +14,7 @@ class ContainerStateMachineService
     {
         $this->stateConfiguration = $stateConfiguration;
     }
+
     public function allowedActions(int $id)
     {
         $container = Container::query()->find($id);
@@ -21,7 +22,7 @@ class ContainerStateMachineService
             abort(404, 'Container not found');
         }
 
-        $status = ContainerStatus::from($container->status);
+        $status = OrderStatus::from($container->status);
 
         if ($status === null) {
             return response()->json(['error' => 'Invalid status'], 400);
@@ -29,8 +30,12 @@ class ContainerStateMachineService
 
         $state = $this->stateConfiguration->stateMap()[$status->name];
         $allowedActions = $state->allowedActions();
+        $response = [];
+        foreach ($allowedActions as $action) {
+            array_push($response, $action->name);
+        }
 
-        return response()->json(['result' => $allowedActions]);
+        return response()->json(['data' => $response]);
     }
 
     public function changeState(int $containerId, int $statusId)
@@ -40,7 +45,7 @@ class ContainerStateMachineService
             abort(404, 'Container not found');
         }
 
-        $status = ContainerStatus::from($container->status);
+        $status = OrderStatus::from($container->status);
 
         if ($status === null) {
             return response()->json(['error' => 'Invalid status'], 400);

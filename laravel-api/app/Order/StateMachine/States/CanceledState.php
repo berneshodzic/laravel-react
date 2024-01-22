@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Containers\StateMachine\States;
+namespace App\Order\StateMachine\States;
 
 class CanceledState
 {
