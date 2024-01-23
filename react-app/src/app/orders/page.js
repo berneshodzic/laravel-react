@@ -3,7 +3,7 @@ import Link from "next/link";
 
 
 const OrdersPage = async () => {
-    const res = await fetch('http://127.0.0.1:8000/api/order');
+    const res = await fetch('http://127.0.0.1:8000/api/order', { cache: 'no-store' });
     const orders = await res.json();
     return (
         <div>

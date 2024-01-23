@@ -9,7 +9,7 @@ export const ContainerProvider = (props) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        getContainers();
+        // getContainers();
     }, []);
 
     const getContainers = async () => {

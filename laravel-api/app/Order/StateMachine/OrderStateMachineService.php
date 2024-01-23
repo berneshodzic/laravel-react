@@ -6,6 +6,7 @@ use App\Order\Models\Order;
 use App\Order\Services\OrderService;
 use App\Order\StateMachine\Configuration\OrderStateConfiguration;
 use App\Order\StateMachine\Enums\OrderStatus;
+use Illuminate\Support\Facades\Log;
 
 class OrderStateMachineService
 {
@@ -45,8 +46,8 @@ class OrderStateMachineService
     {
         $order = $this->orderService->getById($orderId);
         $collection = collect($this->getAllowedActions($orderId));
-
-        if ($collection->contains('value', $order->status)) {
+        Log::info( 'Processing order...');
+        if ($collection->contains('value', OrderStatus::PROCESSING->value)) {
             $order->update([
                 'status' => OrderStatus::PROCESSING
             ]);
@@ -62,7 +63,7 @@ class OrderStateMachineService
         $order = $this->orderService->getById($orderId);
         $collection = collect($this->getAllowedActions($orderId));
 
-        if ($collection->contains('value', $order->status)) {
+        if ($collection->contains('value', OrderStatus::APPROVED->value)) {
             $order->update([
                 'status' => OrderStatus::APPROVED
             ]);
@@ -78,7 +79,7 @@ class OrderStateMachineService
         $order = $this->orderService->getById($orderId);
         $collection = collect($this->getAllowedActions($orderId));
 
-        if ($collection->contains('value', $order->status)) {
+        if ($collection->contains('value', OrderStatus::CANCELED->value)) {
             $order->update([
                 'status' => OrderStatus::CANCELED
             ]);
@@ -94,7 +95,7 @@ class OrderStateMachineService
         $order = $this->orderService->getById($orderId);
         $collection = collect($this->getAllowedActions($orderId));
 
-        if ($collection->contains('value', $order->status)) {
+        if ($collection->contains('value', OrderStatus::REJECTED->value)) {
             $order->update([
                 'status' => OrderStatus::REJECTED
             ]);

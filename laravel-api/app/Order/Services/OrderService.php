@@ -6,15 +6,22 @@ use App\Order\Models\Order;
 use App\Order\Requests\InsertOrderRequest;
 use App\Order\StateMachine\Enums\OrderStatus;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
 
 class OrderService
 {
+    protected $model;
+
+    public function __construct(Order $model)
+    {
+        $this->model = $model;
+    }
     public function getAll()
     {
         return Order::paginate(5);
     }
 
-    public function getById(string $id)
+    public function getById(int $id)
     {
         return Order::findOrFail($id);
     }

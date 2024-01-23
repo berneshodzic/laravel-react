@@ -2,7 +2,6 @@
 
 namespace App\Order\Controllers;
 
-use App\Containers\Resources\ContainerResource;
 use App\Http\Controllers\Controller;
 use App\Order\Requests\InsertOrderRequest;
 use App\Order\Resources\OrderResource;

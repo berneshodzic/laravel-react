@@ -107,10 +107,14 @@ a {
   }
 }
 
-table {
-  border-collapse: collapse;
+.table-container {
   width: 80%;
   margin: 0 auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
   margin-top: 100px;
   margin-bottom: 20px;
 }
