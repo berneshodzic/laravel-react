@@ -12,11 +12,13 @@ class OrderStateMachineService
 {
     private $stateConfiguration;
     private $orderService;
+    private $log;
 
-    public function __construct(OrderStateConfiguration $stateConfiguration, OrderService $orderService)
+    public function __construct(OrderStateConfiguration $stateConfiguration, OrderService $orderService, Log $log)
     {
         $this->stateConfiguration = $stateConfiguration;
         $this->orderService = $orderService;
+        $this->log = $log;
     }
 
     public function getAllowedActions(int $orderId)
@@ -46,7 +48,7 @@ class OrderStateMachineService
     {
         $order = $this->orderService->getById($orderId);
         $collection = collect($this->getAllowedActions($orderId));
-        Log::info( 'Processing order...');
+        $this->log::info( 'Processing order...');
         if ($collection->contains('value', OrderStatus::PROCESSING->value)) {
             $order->update([
                 'status' => OrderStatus::PROCESSING

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('status');
             $table->string('tag');
             $table->boolean('active');
-            $table->int('nesto');
             $table->timestamps();
         });
     }

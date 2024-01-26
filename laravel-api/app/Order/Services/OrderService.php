@@ -2,47 +2,44 @@
 
 namespace App\Order\Services;
 
+use App\Core\SearchObject\BaseSearchObject;
+use App\Core\Services\BaseService;
 use App\Order\Models\Order;
 use App\Order\Requests\InsertOrderRequest;
+use App\Order\SearchObjects\OrderSearchObject;
 use App\Order\StateMachine\Enums\OrderStatus;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Http\Request;
 
-class OrderService
+class OrderService extends BaseService
 {
-    protected $model;
-
-    public function __construct(Order $model)
-    {
-        $this->model = $model;
-    }
-    public function getAll()
-    {
-        return Order::paginate(5);
-    }
-
-    public function getById(int $id)
-    {
-        return Order::findOrFail($id);
-    }
-
     public function insertOrder(InsertOrderRequest $request)
     {
-        try {
-            $order = Order::create([
-                'description' => $request->description,
-                'amount' => $request->amount,
-                'status' => OrderStatus::DRAFT
-            ]);
+        $data = $request->all();
+        $data['status'] = OrderStatus::DRAFT;
 
-            return $order;
-        } catch (ValidationException $e) {
-            $errors = $e->validator->errors();
-            $errorArray = $errors->toArray();
+        return parent::insert($data);
+    }
 
-            return response()->json([
-                'errors' => $errorArray,
-            ], 422);
+    public function updateOrder(InsertOrderRequest $request)
+    {
+
+    }
+
+    public function getSearchObject(): string
+    {
+        return OrderSearchObject::class;
+    }
+
+    protected function getModelClass(): string
+    {
+        return Order::class;
+    }
+
+    public function addFilter(OrderSearchObject | BaseSearchObject  $searchObject, $query)
+    {
+        if ($searchObject->status) {
+            $query = $query->where('status', $searchObject->status);
         }
+
+        return $query;
     }
 }
