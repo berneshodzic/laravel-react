@@ -31,11 +31,11 @@ class Handler extends ExceptionHandler
 
     public function render($request, Exception|Throwable $exception)
     {
-        if ($exception instanceof ModelNotFoundException) {
-            // Handle the model not found exception
-            return response()->json(['error' => $exception->getMessage()], 404);
+        if ($exception instanceof UserException) {
+            return response()->json(['error' => $exception->getMessage()], 500);
         }
-
-        return parent::render($request, $exception);
+        else {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
     }
 }

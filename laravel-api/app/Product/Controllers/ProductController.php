@@ -1,0 +1,131 @@
+<?php
+
+namespace App\Product\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Product\Models\Product;
+use App\Product\Requests\ActivateProductRequest;
+use App\Product\Requests\InsertProductRequest;
+use App\Product\Resources\ProductResource;
+use App\Product\Services\ProductService;
+use App\Product\StateMachine\ProductStateMachineService;
+use Illuminate\Http\Request;
+
+class ProductController extends Controller
+{
+    public function __construct(protected ProductService $productService, protected ProductStateMachineService $productStateMachineService)
+    {
+
+    }
+
+    /**
+     * @OA\Info(
+     *     title="Swagger",
+     *     description="Product API",
+     *     version="1.0.0",
+     *  )
+     * @OA\Get(
+         * path="/api/product",
+         * summary="Get all products",
+         * tags={"Product"},
+         *   @OA\Parameter(
+         *       name="validFrom",
+         *       in="query",
+         *       required=false,
+         *       description="ValidFrom Product",
+         *       @OA\Schema(
+         *          type="DateTime",
+         *       ),
+         *   ),
+         *     @OA\Parameter(
+         *        name="validTo",
+         *        in="query",
+         *        required=false,
+         *        description="ValidTo Product",
+         *        @OA\Schema(
+         *           type="DateTime",
+         *        ),
+         *    ),
+         *          @OA\Parameter(
+         *         name="includeVariants",
+         *         in="query",
+         *         required=false,
+         *         description="Include product variants",
+         *         @OA\Schema(
+         *            type="Boolean",
+         *         ),
+         *     ),
+         *               @OA\Parameter(
+         *          name="includeProductType",
+         *          in="query",
+         *          required=false,
+         *          description="Include product type",
+         *          @OA\Schema(
+         *             type="Boolean",
+         *          ),
+         *      ),
+         * @OA\Response(
+             * response=200,
+             * description="Successful operation",
+         * ),
+     * )
+     */
+
+
+    public function index()
+    {
+        return ProductResource::collection($this->productService->getAll());
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(InsertProductRequest $request)
+    {
+        return ProductResource::make($this->productService->insertProduct($request));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(int $id)
+    {
+        return ProductResource::make($this->productService->getById($id));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Product $product)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Product $product)
+    {
+        //
+    }
+
+    public function allowedActions(int $productId)
+    {
+        return response()->json($this->productStateMachineService->allowedActions($productId));
+    }
+
+    public function activateProduct(ActivateProductRequest $request, $id)
+    {
+        return ProductResource::make($this->productStateMachineService->activateProduct($request, $id));
+    }
+
+    public function deleteProduct($id)
+    {
+        return ProductResource::make($this->productStateMachineService->deleteProduct($id));
+    }
+
+    public function search(Request $request)
+    {
+        return ProductResource::collection($this->productService->searchProduct($request));
+    }
+}

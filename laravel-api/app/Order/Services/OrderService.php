@@ -42,4 +42,9 @@ class OrderService extends BaseService
 
         return $query;
     }
+
+    protected function includeRelation(BaseSearchObject $baseSearchObject, $query)
+    {
+        return $query;
+    }
 }

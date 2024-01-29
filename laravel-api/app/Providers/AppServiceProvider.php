@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Core\SearchObject\BaseSearchObject;
 use App\Order\SearchObjects\OrderSearchObject;
+use App\Product\SearchObjects\ProductSearchObject;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(OrderSearchObject::class, function ($app, $parameters) {
             return new OrderSearchObject($parameters);
+        });
+
+        $this->app->bind(ProductSearchObject::class, function ($app, $parameters) {
+            return new ProductSearchObject($parameters);
         });
     }
 

@@ -1,0 +1,62 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Swagger",
+        "description": "Product API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/product": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get all products",
+                "operationId": "2c7e3591702f1584b057de22ed64e373",
+                "parameters": [
+                    {
+                        "name": "validFrom",
+                        "in": "query",
+                        "description": "ValidFrom Product",
+                        "required": false,
+                        "schema": {
+                            "type": "DateTime"
+                        }
+                    },
+                    {
+                        "name": "validTo",
+                        "in": "query",
+                        "description": "ValidTo Product",
+                        "required": false,
+                        "schema": {
+                            "type": "DateTime"
+                        }
+                    },
+                    {
+                        "name": "includeVariants",
+                        "in": "query",
+                        "description": "Include product variants",
+                        "required": false,
+                        "schema": {
+                            "type": "Boolean"
+                        }
+                    },
+                    {
+                        "name": "includeProductType",
+                        "in": "query",
+                        "description": "Include product type",
+                        "required": false,
+                        "schema": {
+                            "type": "Boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        }
+    }
+}

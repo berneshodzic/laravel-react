@@ -3,12 +3,13 @@
 namespace App\Core\Services;
 
 use App\Core\SearchObject\BaseSearchObject;
-use App\Exceptions\ModelNotFoundException;
+use App\Exceptions\UserException;
 
 abstract class BaseService
 {
     abstract protected function getModelClass();
     abstract protected function addFilter(BaseSearchObject $baseSearchObject, $query);
+    abstract protected function includeRelation(BaseSearchObject $baseSearchObject, $query);
     public function getAll()
     {
         $searchObjectInstance = app($this->getSearchObject());
@@ -17,6 +18,7 @@ abstract class BaseService
 
         $searchObjectInstance->fill(request()->query());
 
+        $query = $this->includeRelation($searchObjectInstance, $query);
         $query = $this->addFilter($searchObjectInstance, $query);
 
         return $query->paginate($searchObjectInstance->limit);
@@ -24,11 +26,19 @@ abstract class BaseService
 
     public function getById($id)
     {
-        $model = $this->getModelClass()::find($id);
-        if (!$model) {
-            throw new ModelNotFoundException('Model not found!');
+        $searchObjectInstance = app($this->getSearchObject());
+        $query = app($this->getModelClass())->query();
+
+        $searchObjectInstance->fill(request()->query());
+        $query = $this->includeRelation($searchObjectInstance, $query);
+        $query = $this->addFilter($searchObjectInstance, $query);
+
+        $result = $query->find($id);
+
+        if (!$result) {
+            throw new UserException('Model not found!');
         }
-        return $model;
+        return $result;
     }
 
     public function insert($request)
