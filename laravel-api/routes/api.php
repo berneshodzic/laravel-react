@@ -1,9 +1,7 @@
 <?php
 
-use App\Containers\Controllers\ContainerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Order\Controllers\OrderController;
 use App\Product\Controllers\ProductTypeController;
 use App\Product\Controllers\ProductController;
 use App\Product\Controllers\VariantController;
@@ -52,16 +50,3 @@ Route::get('productType/{id}',[ProductTypeController::class, 'show']);
 Route::get('product/search',[ProductController::class, 'search']);
 Route::get('product',[ProductController::class, 'index']);
 Route::get('product/{id}',[ProductController::class, 'show']);
-
-Route::apiResource('containers',ContainerController::class);
-
-Route::get('/containers/{id}/allowedActions', [ContainerController::class, 'allowedActions'])->name('container.allowedActions');
-Route::put('/containers/{containerId}/changeState/{statusId}', [ContainerController::class, 'changeState'])->name('container.changeState');
-
-
-Route::apiResource('order',OrderController::class);
-Route::put('/order/{orderId}/process', [OrderController::class, 'processOrder'])->name('order.processOrder');
-Route::put('/order/{orderId}/approve', [OrderController::class, 'approveOrder'])->name('order.approveOrder');
-Route::put('/order/{orderId}/cancel', [OrderController::class, 'cancelOrder'])->name('order.cancelOrder');
-Route::put('/order/{orderId}/reject', [OrderController::class, 'rejectOrder'])->name('order.rejectOrder');
-Route::get('/order/{orderId}/allowedActions', [OrderController::class, 'allowedActions'])->name('order.allowedActions');

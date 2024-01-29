@@ -5,10 +5,27 @@ namespace App\Product\Services;
 use App\Core\SearchObject\BaseSearchObject;
 use App\Core\Services\BaseService;
 use App\Product\Models\ProductType;
+use Illuminate\Support\Facades\Cache;
 
 class ProductTypeService extends BaseService
 {
+    public function getAll()
+    {
+        if (Cache::has('product_type')) {
+            $productTypes = Cache::get('product_type');
+        } else {
+            $productTypes = parent::getAll();
+            Cache::put('product_type', $productTypes, now()->addMinutes(1));
+            return $productTypes;
+        }
+        return $productTypes;
+    }
 
+    public function getById($id)
+    {
+        Cache::forget('product_type');
+        return parent::getById($id);
+    }
     protected function getModelClass()
     {
         return ProductType::class;
