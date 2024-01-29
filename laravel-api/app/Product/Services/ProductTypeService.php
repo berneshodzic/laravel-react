@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Cache;
 
 class ProductTypeService extends BaseService
 {
-    public function getAll()
+    public function getPageable()
     {
         if (Cache::has('product_type')) {
             $productTypes = Cache::get('product_type');
         } else {
-            $productTypes = parent::getAll();
+            $productTypes = parent::getPageable();
             Cache::put('product_type', $productTypes, now()->addMinutes(1));
             return $productTypes;
         }

@@ -20,7 +20,7 @@ class ProductTypeController extends Controller
      */
     public function index()
     {
-        return ProductTypeResource::collection($this->productTypeService->getAll());
+        return ProductTypeResource::collection($this->productTypeService->getPageable());
     }
 
     /**

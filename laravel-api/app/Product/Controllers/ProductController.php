@@ -74,7 +74,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        return ProductResource::collection($this->productService->getAll());
+        return ProductResource::collection($this->productService->getPageable());
     }
 
     /**

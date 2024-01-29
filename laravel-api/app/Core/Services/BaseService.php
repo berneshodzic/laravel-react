@@ -10,7 +10,7 @@ abstract class BaseService
     abstract protected function getModelClass();
     abstract protected function addFilter(BaseSearchObject $baseSearchObject, $query);
     abstract protected function includeRelation(BaseSearchObject $baseSearchObject, $query);
-    public function getAll()
+    public function getPageable()
     {
         $searchObjectInstance = app($this->getSearchObject());
 
