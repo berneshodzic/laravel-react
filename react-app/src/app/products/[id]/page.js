@@ -5,8 +5,8 @@ import {Button} from "@mui/material";
 import {useEffect, useState} from "react";
 import Loader from "../../../components/Loader";
 
-const OrderDetailPage = ({ params }) => {
-    const [order, setOrder] = useState(null);
+const ProductDetailPage = ({ params }) => {
+    const [product, setProduct] = useState(null);
     const [allowedActions, setAllowedActions] = useState([]);
     const [loading, setLoading] = useState(false);
     const [filteredButtons, setFilteredButtons] = useState([]);
@@ -14,13 +14,13 @@ const OrderDetailPage = ({ params }) => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const orderResponse = await fetch(`http://127.0.0.1:8000/api/order/${params.id}`);
+            const orderResponse = await fetch(`http://127.0.0.1:8000/api/product/${params.id}`);
             const orderResponseJson = await orderResponse.json();
-            const allowedActionsResponse = await fetch(`http://127.0.0.1:8000/api/order/${params.id}/allowedActions`);
+            const allowedActionsResponse = await fetch(`http://127.0.0.1:8000/api/product/${params.id}/allowedActions`);
             const allowedActionsResponseJson = await allowedActionsResponse.json();
 
             setLoading(false);
-            setOrder(orderResponseJson?.data);
+            setProduct(orderResponseJson?.data);
             setAllowedActions(allowedActionsResponseJson?.data);
 
             setFilteredButtons(orderStateButtons.filter(obj => allowedActionsResponseJson?.data?.includes(obj.state)));
@@ -35,7 +35,7 @@ const OrderDetailPage = ({ params }) => {
 
     const updateOrderStatus = async (link) => {
         setLoading(true);
-        const res = await fetch(`http://127.0.0.1:8000/api/order/${params.id}${link}`, {
+        const res = await fetch(`http://127.0.0.1:8000/api/product/${params.id}${link}`, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
@@ -49,6 +49,8 @@ const OrderDetailPage = ({ params }) => {
             { loading ?
                 <Loader /> :
                 <div className={'table-container'}>
+                    <p>Ime proizvoda: { product?.name }</p>
+                    <p>De</p>
                     <table>
                         <thead>
                         <tr>
@@ -61,10 +63,10 @@ const OrderDetailPage = ({ params }) => {
                         <tbody>
                         {
                             <tr>
-                                <td>{order?.id}</td>
-                                <td>{order?.description}</td>
-                                <td>{order?.status}</td>
-                                <td>{order?.amount}</td>
+                                <td>{product?.id}</td>
+                                <td>{product?.description}</td>
+                                <td>{product?.status}</td>
+                                <td>{product?.amount}</td>
                             </tr>
                         }
                         </tbody>
@@ -82,4 +84,4 @@ const OrderDetailPage = ({ params }) => {
 )
 };
 
-export default OrderDetailPage;
+export default ProductDetailPage;

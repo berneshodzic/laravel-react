@@ -116,12 +116,12 @@ class ProductController extends Controller
 
     public function activateProduct(ActivateProductRequest $request, $id)
     {
-        return ProductResource::make($this->productStateMachineService->activateProduct($request, $id));
+        return ProductResource::make($this->productService->fromDraftToActive($request, $id));
     }
 
     public function deleteProduct($id)
     {
-        return ProductResource::make($this->productStateMachineService->deleteProduct($id));
+        return ProductResource::make($this->productService->fromActiveToDeleted($id));
     }
 
     public function search(Request $request)

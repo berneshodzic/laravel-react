@@ -7,11 +7,12 @@ use App\Product\Models\Variant;
 use App\Product\Requests\InsertVariantRequest;
 use App\Product\Resources\VariantResource;
 use App\Product\Services\VariantService;
+use App\Product\StateMachine\ProductStateMachineService;
 use Illuminate\Http\Request;
 
 class VariantController extends Controller
 {
-    public function __construct(protected VariantService $variantService)
+    public function __construct(protected VariantService $variantService, protected ProductStateMachineService $productStateMachineService)
     {
 
     }
@@ -28,7 +29,7 @@ class VariantController extends Controller
      */
     public function store(InsertVariantRequest $request)
     {
-        return VariantResource::make($this->variantService->insertVariant($request));
+        return VariantResource::make($this->productStateMachineService->onInsertToDraft($request));
     }
 
     /**

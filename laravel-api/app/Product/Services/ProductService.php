@@ -7,10 +7,15 @@ use App\Core\Services\BaseService;
 use App\Product\Models\Product;
 use App\Product\SearchObjects\ProductSearchObject;
 use App\Product\StateMachine\Enums\ProductStatus;
+use App\Product\StateMachine\ProductStateMachineService;
 use Illuminate\Http\Request;
 
 class ProductService extends BaseService
 {
+    public function __construct(protected ProductStateMachineService $productStateMachineService)
+    {
+
+    }
     public function insertProduct($request)
     {
         $request['status'] = ProductStatus::DRAFT->value;
@@ -79,4 +84,14 @@ class ProductService extends BaseService
         $query = $request->input('query');
         return Product::where('name', 'ILIKE', "%$query%")->get();
     }
+
+//    public function fromDraftToActive($request ,$id)
+//    {
+//        return $this->productStateMachineService->activateProduct($request, $id);
+//    }
+//
+//    public function fromActiveToDeleted($id)
+//    {
+//        return $this->productStateMachineService->deleteProduct($id);
+//    }
 }

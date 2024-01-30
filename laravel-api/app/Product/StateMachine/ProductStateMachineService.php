@@ -5,6 +5,7 @@ namespace App\Product\StateMachine;
 use App\Exceptions\UserException;
 use App\Product\Models\Product;
 use App\Product\Services\ProductService;
+use App\Product\Services\VariantService;
 use App\Product\StateMachine\Configuration\ProductStateConfiguration;
 use App\Product\StateMachine\Enums\ProductStatus;
 use Illuminate\Support\Facades\Auth;
@@ -12,11 +13,11 @@ use Illuminate\Support\Facades\Auth;
 class ProductStateMachineService
 {
     private $productStateConfiguration;
-    private $productService;
-    public function __construct(ProductStateConfiguration $productStateConfiguration, ProductService $productService)
+    private $variantService;
+    public function __construct(ProductStateConfiguration $productStateConfiguration, VariantService $variantService)
     {
-        $this->productService = $productService;
         $this->productStateConfiguration = $productStateConfiguration;
+        $this->variantService = $variantService;
     }
 
     public function getAllowedActions(int $productId)
@@ -39,6 +40,15 @@ class ProductStateMachineService
     public function allowedActions(int $id)
     {
         return $this->getAllowedActions($id);
+    }
+
+    public function onInsertToDraft($request)
+    {
+        $product = Product::find($request['product_id']);
+        if ($product->status === ProductStatus::DRAFT->value)
+        {
+            return $this->variantService->insertVariant($request);
+        } else throw new UserException("Product is not in DRAFT state!");
     }
 
     public function activateProduct($request, int $productId)
