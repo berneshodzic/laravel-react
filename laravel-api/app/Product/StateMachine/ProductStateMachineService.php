@@ -54,7 +54,7 @@ class ProductStateMachineService
     public function activateProduct($request, int $productId)
     {
         $user = Auth::user();
-        $product = $this->productService->getById($productId);
+        $product = Product::find($productId);
         $collection = collect($this->getAllowedActions($productId));
 
         if ($collection->contains('value', ProductStatus::ACTIVE->value)) {
@@ -73,7 +73,7 @@ class ProductStateMachineService
 
     public function deleteProduct(int $productId)
     {
-        $product = $this->productService->getById($productId);
+        $product = Product::find($productId);
         $collection = collect($this->getAllowedActions($productId));
 
         if ($collection->contains('value', ProductStatus::DELETED->value)) {
@@ -81,7 +81,7 @@ class ProductStateMachineService
                 'status' => ProductStatus::DELETED
             ]);
         } else {
-            throw new UserException('Update status not allowed!');
+            throw new UserException('Delete status not allowed!');
         }
 
         return $product;
