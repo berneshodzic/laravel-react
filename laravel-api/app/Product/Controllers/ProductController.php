@@ -114,14 +114,14 @@ class ProductController extends Controller
         return response()->json($this->productStateMachineService->allowedActions($productId));
     }
 
-    public function activateProduct(ActivateProductRequest $request, $id)
+    public function OnDraftToActive(ActivateProductRequest $request, $id)
     {
-        return ProductResource::make($this->productService->fromDraftToActive($request, $id));
+        return ProductResource::make($this->productService->OnDraftToActive($request, $id));
     }
 
-    public function deleteProduct($id)
+    public function OnActiveToDeleted($id)
     {
-        return ProductResource::make($this->productService->fromActiveToDeleted($id));
+        return ProductResource::make($this->productService->OnActiveToDeleted($id));
     }
 
     public function search(Request $request)

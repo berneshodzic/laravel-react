@@ -51,13 +51,13 @@ class ProductStateMachineService
         } else throw new UserException("Product is not in DRAFT state!");
     }
 
-    public function activateProduct($request, int $productId)
+    public function OnDraftToActive($request, int $productId)
     {
         $user = Auth::user();
         $product = Product::find($productId);
         $collection = collect($this->getAllowedActions($productId));
 
-        if ($collection->contains('value', ProductStatus::ACTIVE->value)) {
+        if ($collection->contains('value', 'OnDraftToActive')) {
             $product->update([
                 'status' => ProductStatus::ACTIVE,
                 'activatedBy' => $user->email,
@@ -71,12 +71,12 @@ class ProductStateMachineService
         return $product;
     }
 
-    public function deleteProduct(int $productId)
+    public function OnActiveToDeleted(int $productId)
     {
         $product = Product::find($productId);
         $collection = collect($this->getAllowedActions($productId));
 
-        if ($collection->contains('value', ProductStatus::DELETED->value)) {
+        if ($collection->contains('value', 'OnActiveToDeleted')) {
             $product->update([
                 'status' => ProductStatus::DELETED
             ]);

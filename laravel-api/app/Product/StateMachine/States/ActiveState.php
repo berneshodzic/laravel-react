@@ -2,6 +2,7 @@
 
 namespace App\Product\StateMachine\States;
 
+use App\Product\StateMachine\Enums\ProductActions;
 use App\Product\StateMachine\Enums\ProductStatus;
 
 class ActiveState
@@ -9,7 +10,7 @@ class ActiveState
     public function allowedActions()
     {
         return [
-            ProductStatus::DELETED
+            ProductActions::OnActiveToDeleted
         ];
     }
 }

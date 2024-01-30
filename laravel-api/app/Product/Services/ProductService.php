@@ -85,13 +85,13 @@ class ProductService extends BaseService
         return Product::where('name', 'ILIKE', "%$query%")->get();
     }
 
-    public function fromDraftToActive($request ,$id)
+    public function OnDraftToActive($request ,$id)
     {
-        return $this->productStateMachineService->activateProduct($request, $id);
+        return $this->productStateMachineService->OnDraftToActive($request, $id);
     }
 
-    public function fromActiveToDeleted($id)
+    public function OnActiveToDeleted($id)
     {
-        return $this->productStateMachineService->deleteProduct($id);
+        return $this->productStateMachineService->OnActiveToDeleted($id);
     }
 }
