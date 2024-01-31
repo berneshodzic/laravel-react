@@ -8,13 +8,12 @@ use App\Product\Models\Product;
 use App\Product\Requests\InsertVariantRequest;
 use App\Product\SearchObjects\ProductSearchObject;
 use App\Product\StateMachine\Enums\ProductStatus;
-use App\Product\StateMachine\ProductStateMachineService;
 use App\Product\StateMachine\States\BaseState;
 use Illuminate\Http\Request;
 
 class ProductService extends BaseService
 {
-    public function __construct(protected ProductStateMachineService $productStateMachineService, protected BaseState $baseState)
+    public function __construct(protected BaseState $baseState)
     {
 
     }
@@ -103,7 +102,7 @@ class ProductService extends BaseService
         return $state->allowedActions();
     }
 
-    public function OnDraftToActive($request, $id)
+    public function activateProduct($request, $id)
     {
         $product = Product::find($id);
         $state = $this->baseState->createState($product->status);
@@ -111,7 +110,7 @@ class ProductService extends BaseService
         return $state->activate($product);
     }
 
-    public function OnActiveToDeleted($id)
+    public function deleteProduct($id)
     {
         $product = Product::find($id);
         $state = $this->baseState->createState($product->status);

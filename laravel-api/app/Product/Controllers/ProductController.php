@@ -10,12 +10,12 @@ use App\Product\Requests\InsertVariantRequest;
 use App\Product\Resources\ProductResource;
 use App\Product\Resources\VariantResource;
 use App\Product\Services\ProductService;
-use App\Product\StateMachine\ProductStateMachineService;
+
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function __construct(protected ProductService $productService, protected ProductStateMachineService $productStateMachineService)
+    public function __construct(protected ProductService $productService)
     {
 
     }
@@ -121,14 +121,14 @@ class ProductController extends Controller
         return VariantResource::make($this->productService->insertVariant($request));
     }
 
-    public function OnDraftToActive(ActivateProductRequest $request, $id)
+    public function activateProduct(ActivateProductRequest $request, $id)
     {
-        return ProductResource::make($this->productService->OnDraftToActive($request, $id));
+        return ProductResource::make($this->productService->activateProduct($request, $id));
     }
 
-    public function OnActiveToDeleted($id)
+    public function deleteProduct($id)
     {
-        return ProductResource::make($this->productService->OnActiveToDeleted($id));
+        return ProductResource::make($this->productService->deleteProduct($id));
     }
 
     public function search(Request $request)

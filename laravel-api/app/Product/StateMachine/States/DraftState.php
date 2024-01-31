@@ -13,7 +13,7 @@ class DraftState extends BaseState
     public function allowedActions()
     {
         $actions = parent::allowedActions();
-        array_push($actions, ProductActions::OnDraftToActive);
+        array_push($actions, ProductActions::activate);
         return $actions;
     }
 
