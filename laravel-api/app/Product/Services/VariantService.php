@@ -11,11 +11,6 @@ use App\Product\StateMachine\Enums\ProductStatus;
 
 class VariantService extends BaseService
 {
-    public function insertVariant(InsertVariantRequest $request)
-    {
-        return $this->insert($request->all());
-    }
-
     protected function getModelClass()
     {
         return Variant::class;

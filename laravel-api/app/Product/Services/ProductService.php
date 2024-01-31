@@ -72,6 +72,10 @@ class ProductService extends BaseService
 
         }
 
+        if ($searchObject->name) {
+            $query = $query->where('name', 'ILIKE', "%$searchObject->name%");
+        }
+
         return $query;
     }
 
@@ -86,12 +90,6 @@ class ProductService extends BaseService
         }
 
         return $query;
-    }
-
-    public function searchProduct(Request $request)
-    {
-        $query = $request->input('query');
-        return Product::where('name', 'ILIKE', "%$query%")->get();
     }
 
     public function allowedActions(int $id)

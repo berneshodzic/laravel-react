@@ -45,6 +45,5 @@ Route::get('/product/{productId}/allowedActions', [ProductController::class, 'al
 Route::get('productType',[ProductTypeController::class, 'index']);
 Route::get('productType/{id}',[ProductTypeController::class, 'show']);
 
-Route::get('product/search',[ProductController::class, 'search']);
 Route::get('product',[ProductController::class, 'index']);
 Route::get('product/{id}',[ProductController::class, 'show']);

@@ -5,11 +5,17 @@ namespace App\Product\StateMachine\States;
 use App\Product\Models\Product;
 use App\Product\Models\Variant;
 use App\Product\Requests\InsertVariantRequest;
+use App\Product\Services\VariantService;
 use App\Product\StateMachine\Enums\ProductActions;
 use App\Product\StateMachine\Enums\ProductStatus;
 
 class DraftState extends BaseState
 {
+    public function __construct(protected VariantService $variantService)
+    {
+
+    }
+
     public function allowedActions()
     {
         $actions = parent::allowedActions();
@@ -25,7 +31,7 @@ class DraftState extends BaseState
 
     public function insertVariant(InsertVariantRequest $request)
     {
-        return Variant::create($request->all());
+        return $this->variantService->insert($request->all());
     }
 
     public function activate($product)

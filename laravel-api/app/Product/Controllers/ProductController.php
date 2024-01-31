@@ -130,9 +130,4 @@ class ProductController extends Controller
     {
         return ProductResource::make($this->productService->deleteProduct($id));
     }
-
-    public function search(Request $request)
-    {
-        return ProductResource::collection($this->productService->searchProduct($request));
-    }
 }

@@ -7,6 +7,7 @@ use DateTime;
 
 class ProductSearchObject extends BaseSearchObject
 {
+    public ?string $name = null;
     public ?bool $includeProductType = false;
     public ?bool $includeVariants = false;
     public ?float $priceLTE = null;
@@ -27,5 +28,6 @@ class ProductSearchObject extends BaseSearchObject
         $this->validTo = isset($attributes['validTo']) ? new DateTime($attributes['validTo']) : null;
         $this->priceLTE = $attributes['priceLTE'] ?? null;
         $this->priceGTE = $attributes['priceGTE'] ?? null;
+        $this->name = $attributes['name'] ?? null;
     }
 }
