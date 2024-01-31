@@ -1,6 +1,5 @@
 'use client'
 
-import orderStateButtons from "../../../helpers/orderStateButtons";
 import {Button} from "@mui/material";
 import {useEffect, useState} from "react";
 import Loader from "../../../components/Loader";
@@ -23,7 +22,7 @@ const OrderDetailPage = ({ params }) => {
             setOrder(orderResponseJson?.data);
             setAllowedActions(allowedActionsResponseJson?.data);
 
-            setFilteredButtons(orderStateButtons.filter(obj => allowedActionsResponseJson?.data?.includes(obj.state)));
+            // setFilteredButtons(orderStateButtons.filter(obj => allowedActionsResponseJson?.data?.includes(obj.state)));
         } catch (error) {
             console.error('Error fetching data:', error);
         }

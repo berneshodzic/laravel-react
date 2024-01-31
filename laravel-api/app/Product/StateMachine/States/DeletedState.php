@@ -4,12 +4,11 @@ namespace App\Product\StateMachine\States;
 
 use App\Product\StateMachine\Enums\ProductActions;
 
-class DeletedState
+class DeletedState extends BaseState
 {
     public function allowedActions()
     {
-        return [
-
-        ];
+        $actions = parent::allowedActions();
+        return $actions;
     }
 }

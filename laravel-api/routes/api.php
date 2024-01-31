@@ -34,9 +34,10 @@ Route::middleware(['auth:sanctum', 'auth.sanctum.admin'])->group(function () {
     Route::post('product',[ProductController::class, 'store']);
     Route::put('product',[ProductController::class, 'update']);
     Route::delete('product',[ProductController::class, 'destroy']);
+    Route::post('product/variant',[ProductController::class, 'insertVariant']);
 
-    Route::put('/product/{productId}/activate', [ProductController::class, 'OnDraftToActive'])->name('product.activateProduct');
-    Route::put('/product/{productId}/delete', [ProductController::class, 'OnActiveToDeleted'])->name('product.deleteProduct');
+    Route::put('/product/{productId}/OnDraftToActive', [ProductController::class, 'OnDraftToActive'])->name('product.activateProduct');
+    Route::put('/product/{productId}/OnActiveToDeleted', [ProductController::class, 'OnActiveToDeleted'])->name('product.deleteProduct');
 
     Route::post('/variant', [VariantController::class, 'store']);
 

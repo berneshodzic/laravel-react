@@ -5,21 +5,31 @@ namespace App\Product\Services;
 use App\Core\SearchObject\BaseSearchObject;
 use App\Core\Services\BaseService;
 use App\Product\Models\Product;
+use App\Product\Requests\InsertVariantRequest;
 use App\Product\SearchObjects\ProductSearchObject;
 use App\Product\StateMachine\Enums\ProductStatus;
 use App\Product\StateMachine\ProductStateMachineService;
+use App\Product\StateMachine\States\BaseState;
 use Illuminate\Http\Request;
 
 class ProductService extends BaseService
 {
-    public function __construct(protected ProductStateMachineService $productStateMachineService)
+    public function __construct(protected ProductStateMachineService $productStateMachineService, protected BaseState $baseState)
     {
 
     }
+
+    public function insertVariant(InsertVariantRequest $request)
+    {
+        $product = Product::find($request['product_id']);
+        $state = $this->baseState->createState($product->status);
+
+        return $state->insertVariant($request);
+    }
     public function insertProduct($request)
     {
-        $request['status'] = ProductStatus::DRAFT->value;
-        return $this->insert($request->all());
+        $state = $this->baseState->createState(ProductStatus::DRAFT->value);
+        return $state->insert($request);
     }
 
     public function getSearchObject(): string
@@ -85,13 +95,27 @@ class ProductService extends BaseService
         return Product::where('name', 'ILIKE', "%$query%")->get();
     }
 
-    public function OnDraftToActive($request ,$id)
+    public function allowedActions(int $id)
     {
-        return $this->productStateMachineService->OnDraftToActive($request, $id);
+        $product = Product::find($id);
+        $state = $this->baseState->createState($product->status);
+
+        return $state->allowedActions();
+    }
+
+    public function OnDraftToActive($request, $id)
+    {
+        $product = Product::find($id);
+        $state = $this->baseState->createState($product->status);
+
+        return $state->activate($product);
     }
 
     public function OnActiveToDeleted($id)
     {
-        return $this->productStateMachineService->OnActiveToDeleted($id);
+        $product = Product::find($id);
+        $state = $this->baseState->createState($product->status);
+
+        return $state->delete($product);
     }
 }

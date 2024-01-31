@@ -7,6 +7,7 @@ use App\Product\Models\Product;
 use App\Product\Services\ProductService;
 use App\Product\Services\VariantService;
 use App\Product\StateMachine\Configuration\ProductStateConfiguration;
+use App\Product\StateMachine\Enums\ProductActions;
 use App\Product\StateMachine\Enums\ProductStatus;
 use Illuminate\Support\Facades\Auth;
 
@@ -57,7 +58,7 @@ class ProductStateMachineService
         $product = Product::find($productId);
         $collection = collect($this->getAllowedActions($productId));
 
-        if ($collection->contains('value', 'OnDraftToActive')) {
+        if ($collection->contains('value', ProductActions::OnDraftToActive->value)) {
             $product->update([
                 'status' => ProductStatus::ACTIVE,
                 'activatedBy' => $user->email,
@@ -76,7 +77,7 @@ class ProductStateMachineService
         $product = Product::find($productId);
         $collection = collect($this->getAllowedActions($productId));
 
-        if ($collection->contains('value', 'OnActiveToDeleted')) {
+        if ($collection->contains('value', ProductActions::OnActiveToDeleted->value)) {
             $product->update([
                 'status' => ProductStatus::DELETED
             ]);

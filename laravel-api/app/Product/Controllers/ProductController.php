@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Product\Models\Product;
 use App\Product\Requests\ActivateProductRequest;
 use App\Product\Requests\InsertProductRequest;
+use App\Product\Requests\InsertVariantRequest;
 use App\Product\Resources\ProductResource;
+use App\Product\Resources\VariantResource;
 use App\Product\Services\ProductService;
 use App\Product\StateMachine\ProductStateMachineService;
 use Illuminate\Http\Request;
@@ -111,7 +113,12 @@ class ProductController extends Controller
 
     public function allowedActions(int $productId)
     {
-        return response()->json($this->productStateMachineService->allowedActions($productId));
+        return response()->json($this->productService->allowedActions($productId));
+    }
+
+    public function insertVariant(InsertVariantRequest $request)
+    {
+        return VariantResource::make($this->productService->insertVariant($request));
     }
 
     public function OnDraftToActive(ActivateProductRequest $request, $id)
